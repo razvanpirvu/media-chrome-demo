@@ -1,5 +1,5 @@
 import shaka from "./shaka-player.compiled";
-import MediaTestButton from "./custom-button";
+import MediaBitrateButton from "./bitrate-button";
 
 const manifestUri =
   "https://rpirvu-usea.streaming.media.azure.net/b37ad24a-42d0-4911-bf04-48d44acd2f81/Big_Buck_Bunny_1080_10s_1MB.ism/manifest(format=m3u8-cmaf)";
@@ -23,7 +23,6 @@ async function initPlayer() {
   const video = document.getElementById("video");
   const player = new shaka.Player(video);
 
-
   player.configure({
     drm: {
       servers: {
@@ -32,8 +31,8 @@ async function initPlayer() {
       },
     },
     abr: {
-      enabled: true
-    }
+      enabled: true,
+    },
   });
 
   player.getNetworkingEngine().registerRequestFilter(function (type, request) {
@@ -51,9 +50,9 @@ async function initPlayer() {
   player.addEventListener("error", onErrorEvent);
 
   player.addEventListener("adaptation", async () => {
-    console.log('resolution changed');
+    console.log("resolution changed");
     await loadBitrates();
-  })
+  });
 
   // Try to load a manifest.
   // This is an asynchronous process.
@@ -76,7 +75,9 @@ async function initPlayer() {
 async function loadBitrates() {
   const bitRates = await player.getVariantTracks();
 
-  const bitRatesComponent = document.getElementById("bitrates-list");
+  const bitRatesComponent = document
+    .querySelector("media-bitrate-button")
+    .shadowRoot.getElementById("bitrate-select");
 
   while (bitRatesComponent.firstChild) {
     bitRatesComponent.removeChild(bitRatesComponent.lastChild);
@@ -87,9 +88,10 @@ async function loadBitrates() {
       const button = document.createElement("button");
       button.classList.add("list-group-item");
       button.classList.add("list-group-item-action");
-      if (track.active)
-        button.classList.add("active");
-      button.innerHTML = `${track.id}: ${track.width}x${track.height} - ${formatBytes(track.bandwidth)}`;
+      if (track.active) button.classList.add("active");
+      button.innerHTML = `${track.width}x${track.height} - ${formatBytes(
+        track.bandwidth
+      )}`;
       button.setAttribute("id", track.id);
       button.onclick = () => selectBitRate(track);
       bitRatesComponent.appendChild(button);
@@ -162,19 +164,18 @@ function onError(error) {
 }
 
 function formatBytes(bytes, decimals = 2) {
-  if (!+bytes) return '0 Bytes'
+  if (!+bytes) return "0 Bytes";
 
-  const k = 1024
-  const dm = decimals < 0 ? 0 : decimals
-  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
+  const k = 1024;
+  const dm = decimals < 0 ? 0 : decimals;
+  const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
 
-  const i = Math.floor(Math.log(bytes) / Math.log(k))
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
 
-  return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`
+  return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
 }
 
 document.addEventListener("DOMContentLoaded", initApp);
 document
   .getElementById("stream-url-btn")
   .addEventListener("click", reloadPlayer);
-
