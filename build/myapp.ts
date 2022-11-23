@@ -1,8 +1,19 @@
-import shaka from "./shaka-player.compiled";
-import MediaBitrateButton from "./bitrate-button";
+// import shaka from "./shaka-player.compiled";
+const shaka = require("./shaka-player.compiled");
+import definebtn from "./bitrate-button";
+definebtn();
+// function defineCustomElement(name: any, element: any) {
+//   if (!window.customElements.get(name)) {
+//     window.customElements.define(name, element);
+//     window[element.name] = element;
+//   }
+// }
+// defineCustomElement("media-bitrate-button", MediaBitrateButton);
 
 const manifestUri =
   "https://rpirvu-usea.streaming.media.azure.net/b37ad24a-42d0-4911-bf04-48d44acd2f81/Big_Buck_Bunny_1080_10s_1MB.ism/manifest(format=m3u8-cmaf)";
+
+let player: shaka.Player;
 
 function initApp() {
   // Install built-in polyfills to patch browser incompatibilities.
@@ -20,8 +31,8 @@ function initApp() {
 
 async function initPlayer() {
   // Create a Player instance.
-  const video = document.getElementById("video");
-  const player = new shaka.Player(video);
+  const video = document.getElementById("video") as HTMLMediaElement;
+  player = new shaka.Player(video);
 
   player.configure({
     drm: {
@@ -35,7 +46,7 @@ async function initPlayer() {
     },
   });
 
-  player.getNetworkingEngine().registerRequestFilter(function (type, request) {
+  player.getNetworkingEngine()?.registerRequestFilter(function (type, request) {
     // Only add headers to license requests:
     if (type == shaka.net.NetworkingEngine.RequestType.LICENSE) {
       // This is the specific header name and value the server wants:
@@ -61,8 +72,9 @@ async function initPlayer() {
     // This runs if the asynchronous load is successful.
     console.log("The video has now been loaded!");
 
-    const streamUrl = document.getElementById("stream-url");
-    streamUrl.value = manifestUri;
+    const streamUrl = document.getElementById("stream-url") as HTMLInputElement;
+    //
+    streamUrl!.value = manifestUri;
 
     await loadTextTracks();
     await loadBitrates();
@@ -77,10 +89,10 @@ async function loadBitrates() {
 
   const bitRatesComponent = document
     .querySelector("media-bitrate-button")
-    .shadowRoot.getElementById("bitrate-select");
+    ?.shadowRoot?.getElementById("bitrate-select");
 
-  while (bitRatesComponent.firstChild) {
-    bitRatesComponent.removeChild(bitRatesComponent.lastChild);
+  while (bitRatesComponent!.firstChild) {
+    bitRatesComponent!.removeChild(bitRatesComponent!.lastChild as Node);
   }
 
   if (bitRates.length > 0) {
@@ -92,16 +104,16 @@ async function loadBitrates() {
       button.innerHTML = `${track.width}x${track.height} - ${formatBytes(
         track.bandwidth
       )}`;
-      button.setAttribute("id", track.id);
+      button.setAttribute("id", track.id.toString());
       button.onclick = () => selectBitRate(track);
-      bitRatesComponent.appendChild(button);
+      bitRatesComponent!.appendChild(button);
     }
   } else {
     const button = document.createElement("button");
     button.classList.add("list-group-item");
     button.classList.add("list-group-item-action");
     button.innerHTML = "No text tracks found...";
-    bitRatesComponent.appendChild(button);
+    bitRatesComponent!.appendChild(button);
   }
 }
 
@@ -112,8 +124,8 @@ async function loadTextTracks() {
 
   const subtitleComponent = document.getElementById("subtitle-list");
 
-  while (subtitleComponent.firstChild) {
-    subtitleComponent.removeChild(subtitleComponent.lastChild);
+  while (subtitleComponent!.firstChild) {
+    subtitleComponent!.removeChild(subtitleComponent!.lastChild as Node);
   }
 
   if (textTracks.length > 0) {
@@ -122,48 +134,47 @@ async function loadTextTracks() {
       button.classList.add("list-group-item");
       button.classList.add("list-group-item-action");
       button.innerHTML = `${track.id}: ${track.language}`;
-      button.setAttribute("id", track.id);
+      button.setAttribute("id", track.id.toString());
       button.onclick = () => selectTextTrack(track);
-      subtitleComponent.appendChild(button);
+      subtitleComponent!.appendChild(button);
     }
   } else {
     const button = document.createElement("button");
     button.classList.add("list-group-item");
     button.classList.add("list-group-item-action");
     button.innerHTML = "No text tracks found...";
-    subtitleComponent.appendChild(button);
+    subtitleComponent!.appendChild(button);
   }
 }
 
-function selectTextTrack(track) {
+function selectTextTrack(track: shaka.extern.Track) {
   player.selectTextTrack(track);
   player.setTextTrackVisibility(true);
 }
 
-async function selectBitRate(track) {
+async function selectBitRate(track: shaka.extern.Track) {
   await player.selectVariantTrack(track);
   await loadBitrates();
 }
 
 async function reloadPlayer() {
-  const player = window.player;
-  const streamUri = document.getElementById("stream-url");
-  await player.load(streamUri.value);
+  const streamUri = document.getElementById("stream-url") as HTMLInputElement;
+  await player.load(streamUri!.value);
   // await loadTextTracks();
   console.log(await player.getVariantTracks());
 }
 
-function onErrorEvent(event) {
+function onErrorEvent(event: any) {
   // Extract the shaka.util.Error object from the event.
   onError(event.detail);
 }
 
-function onError(error) {
+function onError(error: any) {
   // Log the error.
   console.error("Error code", error.code, "object", error);
 }
 
-function formatBytes(bytes, decimals = 2) {
+function formatBytes(bytes: number, decimals = 2) {
   if (!+bytes) return "0 Bytes";
 
   const k = 1024;
@@ -178,4 +189,4 @@ function formatBytes(bytes, decimals = 2) {
 document.addEventListener("DOMContentLoaded", initApp);
 document
   .getElementById("stream-url-btn")
-  .addEventListener("click", reloadPlayer);
+  ?.addEventListener("click", reloadPlayer);

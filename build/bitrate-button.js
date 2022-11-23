@@ -1,4 +1,4 @@
-import MediaChromeButton from "media-chrome/dist/media-chrome-button";
+import { MediaChromeButton } from "media-chrome";
 import { MediaUIAttributes } from "media-chrome/dist/constants";
 import { defineCustomElement } from "media-chrome/dist/utils/defineCustomElement";
 import { Window as window } from "media-chrome/dist/utils/server-safe-globals";
@@ -100,10 +100,10 @@ class MediaBitrateButton extends MediaChromeButton {
 
   constructor(options = {}) {
     super({ slotTemplate, ...options });
-    document
-      .querySelector("media-test-button")
-      .shadowRoot.getElementById("bitrate-select").onclick = () =>
-      console.log("I AM CLICKED ");
+    // document
+    //   .querySelector("media-test-button")
+    //   .shadowRoot.getElementById("bitrate-select").onclick = () =>
+    //   console.log("I AM CLICKED ");
   }
 
   connectedCallback() {
@@ -136,5 +136,5 @@ class Test extends HTMLElement {
 
 // customElements.define("media-test-button", Test);
 
-defineCustomElement("media-bitrate-button", MediaBitrateButton);
-export default MediaBitrateButton;
+export default () =>
+  defineCustomElement("media-bitrate-button", MediaBitrateButton);
