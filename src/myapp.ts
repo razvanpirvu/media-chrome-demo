@@ -15,9 +15,11 @@ defineAzureVideoPlayer();
 
 const manifestUri =
   // "https://rpirvu-usea.streaming.media.azure.net/b37ad24a-42d0-4911-bf04-48d44acd2f81/Big_Buck_Bunny_1080_10s_1MB.ism/manifest(format=m3u8-cmaf)";
-  "https://lldemo-usw22.streaming.media.azure.net/90906a93-8259-465c-a5aa-b4e28f848282/7abe20b2-bd1e-47f7-a796-4c09cb8d898d.ism/Manifest(video,format=m3u8-cmaf).m3u8"
+  // "https://lldemo-usw22.streaming.media.azure.net/90906a93-8259-465c-a5aa-b4e28f848282/7abe20b2-bd1e-47f7-a796-4c09cb8d898d.ism/Manifest(video,format=m3u8-cmaf).m3u8"
+  "https://dash.akamaized.net/akamai/test/caption_test/ElephantsDream/elephants_dream_480p_heaac5_1_https.mpd"
 
 let player: shaka.Player;
+let cue: shaka.text.Cue;
 
 function initApp() {
   // Install built-in polyfills to patch browser incompatibilities.
@@ -40,6 +42,7 @@ function _getVideEl(): HTMLMediaElement {
 async function initPlayer() {
   // Create a Player instance.
   const video = _getVideEl();
+  
   player = new shaka.Player(video);
 
   player.configure({
@@ -154,7 +157,34 @@ async function loadTextTracks() {
   }
 }
 
+function shiftTrack() {
+  const video = _getVideEl();
+  const tracks = video.textTracks;
+  const cues = Array.from((tracks[0] && tracks[0].cues) || []) as VTTCue[];
+  cues.forEach(cue => {
+    cue.line = 0;
+    cue.line = -4;
+    console.log(cue)
+  })
+}
+
+function resetTrack() {
+  const video = _getVideEl();
+  const tracks = video.textTracks;
+  const cues = Array.from((tracks[0] && tracks[0].cues) || []) as VTTCue[];
+  setTimeout(() => {
+    cues.forEach(cue => {
+      cue.line = 0;
+      cue.line = -2;
+      console.log(cue)
+    })
+  }, 200)
+}
+
 function selectTextTrack(track: shaka.extern.Track) {
+  console.log(track);
+  
+
   player.selectTextTrack(track);
   player.setTextTrackVisibility(true);
 }
@@ -197,3 +227,11 @@ document.addEventListener("DOMContentLoaded", initApp);
 document
   .getElementById("stream-url-btn")
   ?.addEventListener("click", reloadPlayer);
+  document.querySelector("azure-video-player")?.addEventListener("mouseenter", () => {
+    console.log("nmouse has entered");
+    shiftTrack();
+  })
+  document.querySelector("azure-video-player")?.addEventListener("mouseleave", () => {
+    console.log("nmouse has left");
+    resetTrack();
+  })

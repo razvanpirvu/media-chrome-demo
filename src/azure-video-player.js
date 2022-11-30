@@ -67,6 +67,14 @@ media-fullscreen-button {
   margin: 0 auto;
   padding-right: 15%;
 }
+
+#video::cue {
+  font-size: 28px;
+  bottom: 30;
+  background-color: transparent;
+  text-shadow: 1px 1px 2px black;
+}
+
 </style>
 
 <media-controller>
