@@ -1,7 +1,10 @@
 // import shaka from "./shaka-player.compiled";
 const shaka = require("./shaka-player.compiled");
 import definebtn from "./bitrate-button";
+import defineAzureVideoPlayer from "./azure-video-player";
+
 definebtn();
+defineAzureVideoPlayer();
 // function defineCustomElement(name: any, element: any) {
 //   if (!window.customElements.get(name)) {
 //     window.customElements.define(name, element);
@@ -11,7 +14,8 @@ definebtn();
 // defineCustomElement("media-bitrate-button", MediaBitrateButton);
 
 const manifestUri =
-  "https://rpirvu-usea.streaming.media.azure.net/b37ad24a-42d0-4911-bf04-48d44acd2f81/Big_Buck_Bunny_1080_10s_1MB.ism/manifest(format=m3u8-cmaf)";
+  // "https://rpirvu-usea.streaming.media.azure.net/b37ad24a-42d0-4911-bf04-48d44acd2f81/Big_Buck_Bunny_1080_10s_1MB.ism/manifest(format=m3u8-cmaf)";
+  "https://lldemo-usw22.streaming.media.azure.net/90906a93-8259-465c-a5aa-b4e28f848282/7abe20b2-bd1e-47f7-a796-4c09cb8d898d.ism/Manifest(video,format=m3u8-cmaf).m3u8"
 
 let player: shaka.Player;
 
@@ -29,9 +33,13 @@ function initApp() {
   }
 }
 
+function _getVideEl(): HTMLMediaElement {
+  return document.querySelector("azure-video-player")?.shadowRoot?.getElementById("video") as HTMLMediaElement;
+}
+
 async function initPlayer() {
   // Create a Player instance.
-  const video = document.getElementById("video") as HTMLMediaElement;
+  const video = _getVideEl();
   player = new shaka.Player(video);
 
   player.configure({
@@ -87,8 +95,7 @@ async function initPlayer() {
 async function loadBitrates() {
   const bitRates = await player.getVariantTracks();
 
-  const bitRatesComponent = document
-    .querySelector("media-bitrate-button")
+  const bitRatesComponent = document.querySelector("azure-video-player")?.shadowRoot?.querySelector("media-bitrate-button")
     ?.shadowRoot?.getElementById("bitrate-select");
 
   while (bitRatesComponent!.firstChild) {
