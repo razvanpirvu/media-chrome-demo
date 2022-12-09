@@ -1,10 +1,8 @@
 // import shaka from "./shaka-player.compiled";
 const shaka = require("./shaka-player.compiled");
-import definebtn from "./bitrate-button";
-import defineAzureVideoPlayer from "./azure-video-player";
+import defineBtn from "./bitrate-button";
+import AzureVideoPlayer from "./azure-video-player";
 
-definebtn();
-defineAzureVideoPlayer();
 // function defineCustomElement(name: any, element: any) {
 //   if (!window.customElements.get(name)) {
 //     window.customElements.define(name, element);
@@ -16,10 +14,10 @@ defineAzureVideoPlayer();
 const manifestUri =
   // "https://rpirvu-usea.streaming.media.azure.net/b37ad24a-42d0-4911-bf04-48d44acd2f81/Big_Buck_Bunny_1080_10s_1MB.ism/manifest(format=m3u8-cmaf)";
   // "https://lldemo-usw22.streaming.media.azure.net/90906a93-8259-465c-a5aa-b4e28f848282/7abe20b2-bd1e-47f7-a796-4c09cb8d898d.ism/Manifest(video,format=m3u8-cmaf).m3u8"
-  "https://dash.akamaized.net/akamai/test/caption_test/ElephantsDream/elephants_dream_480p_heaac5_1_https.mpd"
+  "https://dash.akamaized.net/akamai/test/caption_test/ElephantsDream/elephants_dream_480p_heaac5_1_https.mpd";
+// "https://testendpoint-pamishtestupload-usea.streaming.media.azure.net/a1872fab-df71-480f-90ce-0535f860a304/ef5b884b-d144-4cfe-9787-c5339093d0be.ism/manifest(format=mpd-time-cmaf,encryption=cenc)";
 
 let player: shaka.Player;
-let cue: shaka.text.Cue;
 
 function initApp() {
   // Install built-in polyfills to patch browser incompatibilities.
@@ -33,16 +31,22 @@ function initApp() {
     // This browser does not have the minimum set of APIs we need.
     console.error("Browser not supported!");
   }
+
+  defineBtn();
+  const azurePlayer: any = new AzureVideoPlayer();
+  azurePlayer.addControls();
 }
 
 function _getVideEl(): HTMLMediaElement {
-  return document.querySelector("azure-video-player")?.shadowRoot?.getElementById("video") as HTMLMediaElement;
+  return document
+    .querySelector("azure-video-player")
+    ?.shadowRoot?.getElementById("video") as HTMLMediaElement;
 }
 
 async function initPlayer() {
   // Create a Player instance.
   const video = _getVideEl();
-  
+
   player = new shaka.Player(video);
 
   player.configure({
@@ -62,6 +66,13 @@ async function initPlayer() {
     if (type == shaka.net.NetworkingEngine.RequestType.LICENSE) {
       // This is the specific header name and value the server wants:
       request.headers["authorization"] = "Bearer --enter-value-here-";
+      // console.log("key type: ", type);
+      // console.log(shaka.net.NetworkingEngine.RequestType);
+    }
+
+    if (type === shaka.net.NetworkingEngine.RequestType.KEY) {
+      console.log("key type: ", type);
+      console.log("request: ", request);
     }
   });
 
@@ -98,7 +109,9 @@ async function initPlayer() {
 async function loadBitrates() {
   const bitRates = await player.getVariantTracks();
 
-  const bitRatesComponent = document.querySelector("azure-video-player")?.shadowRoot?.querySelector("media-bitrate-button")
+  const bitRatesComponent = document
+    .querySelector("azure-video-player")
+    ?.shadowRoot?.querySelector("media-bitrate-button")
     ?.shadowRoot?.getElementById("bitrate-select");
 
   while (bitRatesComponent!.firstChild) {
@@ -161,11 +174,14 @@ function shiftTrack() {
   const video = _getVideEl();
   const tracks = video.textTracks;
   const cues = Array.from((tracks[0] && tracks[0].cues) || []) as VTTCue[];
-  cues.forEach(cue => {
+  cues.forEach((cue) => {
     cue.line = 0;
     cue.line = -4;
-    console.log(cue)
-  })
+    console.log(cue);
+  });
+
+  const html = document.querySelector("azure-video-player");
+  console.log("Attribute: ", html?.getAttribute("play-button"));
 }
 
 function resetTrack() {
@@ -173,17 +189,16 @@ function resetTrack() {
   const tracks = video.textTracks;
   const cues = Array.from((tracks[0] && tracks[0].cues) || []) as VTTCue[];
   setTimeout(() => {
-    cues.forEach(cue => {
+    cues.forEach((cue) => {
       cue.line = 0;
       cue.line = -2;
-      console.log(cue)
-    })
-  }, 200)
+      console.log(cue);
+    });
+  }, 200);
 }
 
 function selectTextTrack(track: shaka.extern.Track) {
   console.log(track);
-  
 
   player.selectTextTrack(track);
   player.setTextTrackVisibility(true);
@@ -227,11 +242,15 @@ document.addEventListener("DOMContentLoaded", initApp);
 document
   .getElementById("stream-url-btn")
   ?.addEventListener("click", reloadPlayer);
-  document.querySelector("azure-video-player")?.addEventListener("mouseenter", () => {
+document
+  .querySelector("azure-video-player")
+  ?.addEventListener("mouseenter", () => {
     console.log("nmouse has entered");
     shiftTrack();
-  })
-  document.querySelector("azure-video-player")?.addEventListener("mouseleave", () => {
+  });
+document
+  .querySelector("azure-video-player")
+  ?.addEventListener("mouseleave", () => {
     console.log("nmouse has left");
     resetTrack();
-  })
+  });

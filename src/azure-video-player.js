@@ -82,27 +82,80 @@ media-fullscreen-button {
       <!-- <track label="thumbnails" default kind="metadata" src="https://image.mux.com/DS00Spx1CV902MCtPj5WknGlR102V5HFkDe/storyboard.vtt"> -->
     </video>
     <media-control-bar>
-      <media-play-button></media-play-button>
-      <media-mute-button></media-mute-button>
-      <media-volume-range></media-volume-range>
-      <media-time-range></media-time-range>
-      <media-time-display show-duration></media-time-display>
-      <media-bitrate-button></media-bitrate-button>
-      <media-captions-button></media-captions-button>
-      <media-fullscreen-button></media-fullscreen-button>
+
     </media-control-bar>
 </media-controller>
-`
+`;
 
 class AzureVideoPlayer extends HTMLElement {
-    constructor() {
-        super();
+  _template;
 
-        const shadow = this.attachShadow({ mode: "open" });
+  constructor() {
+    super();
 
-        const html = template.content.cloneNode(true);
-        shadow.appendChild(html);
+    const shadow = this.attachShadow({ mode: "open" });
+
+    const html = template.content.cloneNode(true);
+    shadow.appendChild(html);
+
+    // this.buildTemplate();
+  }
+
+  addControls() {
+    // Update video player based on attributes
+    const html = document
+      .querySelector("azure-video-player")
+      ?.shadowRoot?.querySelector("media-controller")
+      ?.querySelector("media-control-bar");
+
+    const attrs = document.querySelector("azure-video-player")?.attributes;
+
+    const controls = [];
+    for (let i = 0; i < attrs.length; i++) {
+      this._buildControls(attrs.item(i).nodeName, controls);
     }
+
+    const template = document.createElement("template");
+    // console.log(controls);
+    template.innerHTML = controls.join("\n");
+    html?.appendChild(template.content.cloneNode(true));
+  }
+
+  _buildControls(controlType, controls) {
+    switch (controlType) {
+      case "play-button":
+        controls.push("<media-play-button></media-play-button>");
+        break;
+      case "timeline":
+        controls.push("<media-time-range></media-time-range>");
+        break;
+      case "bitrate-button":
+        controls.push("<media-bitrate-button></media-bitrate-button>");
+        break;
+      case "mute-button":
+        controls.push("<media-mute-button></media-mute-button>");
+        break;
+      case "volume-range":
+        controls.push("<media-volume-range></media-volume-range>");
+        break;
+      case "time-display":
+        controls.push(
+          "<media-time-display show-duration></media-time-display>"
+        );
+        break;
+      case "captions-button":
+        controls.push("<media-captions-button></media-captions-button>");
+        break;
+      case "fullscreen-button":
+        controls.push("<media-fullscreen-button></media-fullscreen-button>");
+        break;
+      default:
+        break;
+    }
+  }
 }
 
-export default () => defineCustomElement("azure-video-player", AzureVideoPlayer);
+defineCustomElement("azure-video-player", AzureVideoPlayer);
+
+export default AzureVideoPlayer;
+//   defineCustomElement("azure-video-player", AzureVideoPlayer);
