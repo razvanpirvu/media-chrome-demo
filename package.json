@@ -1,13 +1,27 @@
 {
   "devDependencies": {
+    "@azure/msal-browser": "2.28.1",
+    "@rushstack/heft": "0.48.8",
+    "@rushstack/node-core-library": "3.53.2",
+    "@types/highcharts": "5.0.4",
+    "@types/react": "17.0.45",
+    "@types/react-dom": "17.0.17",
+    "@types/react-test-renderer": "16.9.0",
     "copy-webpack-plugin": "^11.0.0",
+    "enzyme": "^3.11.0",
+    "eslint": "8.7.0",
     "html-webpack-plugin": "^5.5.0",
     "http-server": "^14.1.1",
+    "prettier-plugin-jsdoc": "0.3.31",
+    "react": "17.0.1",
+    "react-dom": "17.0.1",
+    "react-test-renderer": "17.0.1",
     "ts-loader": "^9.4.1",
     "typescript": "^4.9.3",
     "webpack": "^5.75.0",
     "webpack-cli": "^4.10.0",
-    "webpack-dev-server": "^4.11.1"
+    "webpack-dev-server": "^4.11.1",
+    "whatwg-fetch": "2.0.3"
   },
   "scripts": {
     "tsc-init": "tsc --init",
@@ -17,9 +31,33 @@
     "start": "webpack serve --open"
   },
   "dependencies": {
+    "@fluentui/merge-styles": "^7.20.1",
+    "@fluentui/react": "^7.199.1",
+    "@fluentui/react-components": "9.0.0-rc.14",
+    "@fluentui/react-icons": "2.0.162-beta.13",
+    "@fluentui/react-theme-provider": "^0.19.13",
+    "@fluentui/style-utilities": "^7.23.1",
+    "@griffel/react": "1.4.2",
+    "@types/lscache": "1.3.0",
+    "@uifabric/merge-styles": "^7.20.1",
+    "@uifabric/styling": "^7.23.1",
+    "@uifabric/utilities": "^7.38.2",
     "bootstrap": "^5.2.3",
     "concurrently": "^7.5.0",
+    "convert-react-to-web-component": "^3.0.0",
     "express": "^4.18.2",
-    "media-chrome": "^0.16.0"
+    "media-chrome": "^0.16.0",
+    "office-ui-fabric-react": "^7.199.1",
+    "react": ">=16.13.1 <18.0.0",
+    "react-to-webcomponent": "^2.0.0-alpha.0",
+    "roosterjs": "7.11.3",
+    "scheduler": "0.20.2",
+    "tslib": "2.3.1"
+  },
+  "peerDependencies": {
+    "@types/react": ">=16.9.51 <18.0.0",
+    "@types/react-dom": ">=16.9.8 <18.0.0",
+    "react": ">=16.13.1 <18.0.0",
+    "react-dom": ">=16.13.1 <18.0.0"
   }
 }

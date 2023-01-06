@@ -82,7 +82,7 @@ media-fullscreen-button {
       <!-- <track label="thumbnails" default kind="metadata" src="https://image.mux.com/DS00Spx1CV902MCtPj5WknGlR102V5HFkDe/storyboard.vtt"> -->
     </video>
     <media-control-bar>
-
+    <volume-button-and-slider></volume-button-and-slider>
     </media-control-bar>
 </media-controller>
 `;
