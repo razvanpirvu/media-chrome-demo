@@ -7,14 +7,14 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.ts|.tsx$/,
+        test: /\.ts(x)?$/,
         loader: "ts-loader",
         exclude: /node_modules/,
       },
     ],
   },
   resolve: {
-    extensions: [".ts", ".js"],
+    extensions: [".ts", ".js", ".tsx"],
   },
   output: {
     filename: "[name].js",

@@ -83,6 +83,7 @@ media-fullscreen-button {
     </video>
     <media-control-bar>
     <volume-button-and-slider></volume-button-and-slider>
+    <react-app></react-app>
     </media-control-bar>
 </media-controller>
 `;
