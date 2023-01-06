@@ -82,7 +82,7 @@ media-fullscreen-button {
       <!-- <track label="thumbnails" default kind="metadata" src="https://image.mux.com/DS00Spx1CV902MCtPj5WknGlR102V5HFkDe/storyboard.vtt"> -->
     </video>
     <media-control-bar>
-    <volume-button-and-slider></volume-button-and-slider>
+    <react-test-volume></react-test-volume>
     <react-app></react-app>
     </media-control-bar>
 </media-controller>
@@ -131,13 +131,13 @@ class AzureVideoPlayer extends HTMLElement {
         controls.push("<media-time-range></media-time-range>");
         break;
       case "bitrate-button":
-        controls.push("<media-bitrate-button></media-bitrate-button>");
+        controls.push("<react-test></react-test>");
         break;
       case "mute-button":
         controls.push("<media-mute-button></media-mute-button>");
         break;
       case "volume-range":
-        controls.push("<media-volume-range></media-volume-range>");
+        controls.push("<react-test-volume></react-test-volume>");
         break;
       case "time-display":
         controls.push(

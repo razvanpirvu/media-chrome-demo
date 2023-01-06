@@ -29,7 +29,7 @@ import {
 //   import { useReadOnlyObservable, useObservable } from '@msstream/utilities-hooks';
 //   import { altKeyName } from '@msstream/shared-ui';
 //   import { isHighContrastActivated } from '../../shared.utils';
-  
+import reactToWebComponent from "react-to-webcomponent";
 
 export const altKeyName = "Alt"
 
@@ -218,7 +218,7 @@ export const mtcComponentsStyles = makeStyles({
           sliderContainerRef.current.style.height = '128px';
           sliderContainerRef.current.style.opacity = '0.8';
           sliderContainerRef.current.style.pointerEvents = 'auto';
-          //props.volumeSliderShown.value = true;
+          // props.volumeSliderShown.value = true;
           if (!hasLoggedOnShow.current) {
             // log.userAction('VolumeSliderAction', {
             //   actionType: 'LeftClick',
@@ -388,7 +388,9 @@ export const mtcComponentsStyles = makeStyles({
 // const WebGreeting = reactToWebComponent(VolumeButtonAndSlider, React as any, ReactDOM as any)
 
 // customElements.define("my-volume-button", WebGreeting)
+import ReactDom from "react-dom"
 
+// import reactToWebComponent from 'convert-react-to-web-component';
+const webComponent = reactToWebComponent(VolumeButtonAndSlider, React as any, ReactDom as any);
 
-import reactToWebComponent from 'convert-react-to-web-component';
-reactToWebComponent(VolumeButtonAndSlider);
+export default () => customElements.define("react-test-volume", webComponent as any);

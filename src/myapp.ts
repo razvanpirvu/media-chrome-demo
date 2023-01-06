@@ -2,14 +2,15 @@
 const shaka = require("./shaka-player.compiled");
 import defineBtn from "./bitrate-button";
 import AzureVideoPlayer from "./azure-video-player";
-
+import reactTest from "./Test.jsx"
+import volumeReact from "./volume";
 // function defineCustomElement(name: any, element: any) {
 //   if (!window.customElements.get(name)) {
 //     window.customElements.define(name, element);
 //     window[element.name] = element;
 //   }
 // }
-// defineCustomElement("media-bitrate-button", MediaBitrateButton);
+// defineCustomElement("react-test", MediaBitrateButton);
 
 const manifestUri =
   // "https://rpirvu-usea.streaming.media.azure.net/b37ad24a-42d0-4911-bf04-48d44acd2f81/Big_Buck_Bunny_1080_10s_1MB.ism/manifest(format=m3u8-cmaf)";
@@ -35,6 +36,8 @@ function initApp() {
   defineBtn();
   const azurePlayer: any = new AzureVideoPlayer();
   azurePlayer.addControls();
+  reactTest();
+  volumeReact();
 }
 
 function _getVideEl(): HTMLMediaElement {
@@ -111,8 +114,12 @@ async function loadBitrates() {
 
   const bitRatesComponent = document
     .querySelector("azure-video-player")
-    ?.shadowRoot?.querySelector("media-bitrate-button")
-    ?.shadowRoot?.getElementById("bitrate-select");
+    ?.shadowRoot?.querySelector("react-test")
+    ?.querySelector("#bitrate-select")
+    
+
+    console.log("bitRatesComponent")
+    console.log(bitRatesComponent)
 
   while (bitRatesComponent!.firstChild) {
     bitRatesComponent!.removeChild(bitRatesComponent!.lastChild as Node);

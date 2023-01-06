@@ -7,14 +7,27 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.ts(x)?$/,
+        test: /\.ts$/,
         loader: "ts-loader",
         exclude: /node_modules/,
       },
+      {
+        test: /\.(js|jsx|tsx)$/,
+        exclude: /node_modules/,
+        loader: 'babel-loader',
+        options: {
+          presets: ["@babel/preset-typescript"],
+        }
+      },
+      {
+        test: /\.css$/i,
+        use: ["style-loader", "css-loader"],
+      },
+      
     ],
   },
   resolve: {
-    extensions: [".ts", ".js", ".tsx"],
+    extensions: [".ts", ".js", ".tsx", ".jsx"],
   },
   output: {
     filename: "[name].js",

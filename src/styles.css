@@ -1,0 +1,45 @@
+.initials{
+    font-size:medium;
+    padding-bottom:5px;
+  }
+  .dropbtn {
+    background: none;
+    color: rgb(63, 36, 36);
+    padding: 16px;
+    
+    border: none;
+    top:50%;
+  }
+
+  /* The container <div> - needed to position the dropup content */
+  .dropup {
+    position: relative;
+    display: inline-block;
+  }
+
+  /* Dropup content (Hidden by Default) */
+  .dropup-content {
+    display: none;
+    position: absolute;
+    bottom: 50px;
+    min-width: 180px;
+    max-width: 250px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+  }
+
+  /* Links inside the dropup */
+  .dropup-content button {
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    font-size: 0.8rem;
+  }
+
+  /* Change color of dropup links on hover */
+  .dropup-content a:hover {background-color: #ddd}
+
+  /* Show the dropup menu on hover */
+  .dropup:hover .dropup-content {
+    display: block;
+  }
