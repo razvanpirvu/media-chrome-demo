@@ -3,7 +3,11 @@ const shaka = require("./shaka-player.compiled");
 import defineBtn from "./bitrate-button";
 import AzureVideoPlayer from "./azure-video-player";
 import reactTest from "./Test.jsx"
-import volumeReact from "./volume";
+
+import MediaController  from "media-chrome/dist/media-controller";
+
+// import volumeReact from "./volume";
+import playReact from "./PlayPause";
 // function defineCustomElement(name: any, element: any) {
 //   if (!window.customElements.get(name)) {
 //     window.customElements.define(name, element);
@@ -37,7 +41,8 @@ function initApp() {
   const azurePlayer: any = new AzureVideoPlayer();
   azurePlayer.addControls();
   reactTest();
-  volumeReact();
+  // volumeReact();
+  playReact();
 }
 
 function _getVideEl(): HTMLMediaElement {
@@ -261,3 +266,16 @@ document
     console.log("nmouse has left");
     resetTrack();
   });
+
+
+  document
+  .querySelector("azure-video-player")?.shadowRoot?.querySelector("react-play-pause")?.addEventListener("mediaplayrequest", () => {
+    console.log("Play request");
+     
+  });
+
+  document.addEventListener("mediapauserequest", () => {
+    console.log("Pause request");
+    
+  });
+  

@@ -125,7 +125,8 @@ class AzureVideoPlayer extends HTMLElement {
   _buildControls(controlType, controls) {
     switch (controlType) {
       case "play-button":
-        controls.push("<media-play-button></media-play-button>");
+        // controls.push("<media-play-button></media-play-button>");
+        controls.push("<react-play-pause></react-play-pause>");
         break;
       case "timeline":
         controls.push("<media-time-range></media-time-range>");
