@@ -133,33 +133,19 @@ export const PlayPauseToggle: React.FunctionComponent<IPlayPauseToggleProps> = (
     ? mergeClasses(styles.buttonStyle, styles.buttonStyleHighContrastFix)
     : styles.buttonStyle;
 
-
-  const playBtn = React.useRef();
-
   const handleClick = (): void => {
     // handlers.togglePlayPause('LeftClick');
     if (playState === "Playing") {
         setPlayState("Paused");
-        
-        // document.dispatchEvent(
-        //     new Event("mediapauserequest", {composed: true, bubbles: true})
-        // )
-
         document.querySelector("azure-video-player")?.shadowRoot?.querySelector("react-play-pause")?.dispatchEvent(
             new Event("mediapauserequest", {composed: true, bubbles: true})
         )
-    
     } else {
         setPlayState("Playing");
         document.querySelector("azure-video-player")?.shadowRoot?.querySelector("react-play-pause")?.dispatchEvent(
             new Event("mediaplayrequest", {composed: true, bubbles: true})
         )  
     }
-
-    console.log("Button has been clicked")
-    
-    // console.log("mydoc", myDoc)
-    
   };
 
   return (

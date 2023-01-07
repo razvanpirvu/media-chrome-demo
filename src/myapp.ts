@@ -257,25 +257,12 @@ document
 document
   .querySelector("azure-video-player")
   ?.addEventListener("mouseenter", () => {
-    console.log("nmouse has entered");
     shiftTrack();
   });
 document
   .querySelector("azure-video-player")
   ?.addEventListener("mouseleave", () => {
-    console.log("nmouse has left");
     resetTrack();
   });
 
-
-  document
-  .querySelector("azure-video-player")?.shadowRoot?.querySelector("react-play-pause")?.addEventListener("mediaplayrequest", () => {
-    console.log("Play request");
-     
-  });
-
-  document.addEventListener("mediapauserequest", () => {
-    console.log("Pause request");
-    
-  });
   
