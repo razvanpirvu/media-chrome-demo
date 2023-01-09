@@ -6,7 +6,7 @@
 
 import { Button, mergeClasses, Tooltip,
     shorthands,
-    makeStyles } from '@fluentui/react-components';
+    makeStyles, FluentProvider, webDarkTheme } from '@fluentui/react-components';
 import { Pause20Regular, Play20Regular } from '@fluentui/react-icons';
 // import { useObservable } from '@msstream/utilities-hooks';
 import React from 'react';
@@ -168,6 +168,7 @@ export const PlayPauseToggle: React.FunctionComponent<IPlayPauseToggleProps> = (
   }, [])
 
   return (
+    <FluentProvider theme={webDarkTheme}>
     <Tooltip
       content={{ className: styles.tooltip, children: elementInfo.tooltipLabel }}
       relationship='label'
@@ -184,6 +185,7 @@ export const PlayPauseToggle: React.FunctionComponent<IPlayPauseToggleProps> = (
         aria-label={elementInfo.buttonAriaLabel}
       />
     </Tooltip>
+    </FluentProvider>
   );
 };
 

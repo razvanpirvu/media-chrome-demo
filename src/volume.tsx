@@ -19,7 +19,9 @@ import {
     SliderOnChangeData,
     mergeClasses,
     shorthands,
-    makeStyles
+    makeStyles,
+    FluentProvider,
+    webDarkTheme
   } from '@fluentui/react-components';
   import * as React from 'react';
 //   import { mtcComponentsStyles } from '../../mtcComponents.classNames';
@@ -305,7 +307,7 @@ export const mtcComponentsStyles = makeStyles({
   
     
 
-    return (
+    return (<FluentProvider theme={webDarkTheme}>
       <div
         className={styles.volumeContainer}
         // tslint:disable-next-line: jsx-ban-props
@@ -382,6 +384,7 @@ export const mtcComponentsStyles = makeStyles({
           </Tooltip>
         </div>
       </div>
+      </FluentProvider>
     );
   };
   
