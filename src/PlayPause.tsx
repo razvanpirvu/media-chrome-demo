@@ -21,6 +21,7 @@ import { CssVarNames, NamedColors, volumeStyles } from './VolumeButtonAndSlider.
 
 export interface IPlayPauseToggleProps {
   tooltipMountNode: HTMLDivElement;
+  isSliderAllowed: boolean;
 }
 
 export const altKeyName = "Alt"
@@ -148,6 +149,24 @@ export const PlayPauseToggle: React.FunctionComponent<IPlayPauseToggleProps> = (
     }
   };
 
+  const observer = new MutationObserver((mutations) => {
+    let isPaused = false;
+    mutations.forEach((mutation) => {
+        if (mutation.type === 'attributes' && mutation.attributeName === "media-paused") {
+            isPaused = true;
+        }
+    })
+    // console.log(mutations);
+    setPlayState(isPaused ? "Paused" : "Playing")
+  })
+
+  React.useEffect(() => {
+    const el = document.querySelector("azure-video-player")?.shadowRoot?.querySelector("media-controller")
+    observer.observe(el!, {
+        attributeFilter: ["media-paused", "media-current-time"]
+    }) 
+  }, [])
+
   return (
     <Tooltip
       content={{ className: styles.tooltip, children: elementInfo.tooltipLabel }}
@@ -168,9 +187,13 @@ export const PlayPauseToggle: React.FunctionComponent<IPlayPauseToggleProps> = (
   );
 };
 
-
+import PropTypes from "prop-types"
 import reactToWebComponent from "react-to-webcomponent";
 import ReactDom from "react-dom"
+
+// PlayPauseToggle.propTypes = {
+//     isSliderAllowed: PropTypes.bool.isRequired
+// }
 
 const webComponent = reactToWebComponent(PlayPauseToggle, React as any, ReactDom as any);
 export default () => customElements.define("react-play-pause", webComponent as any);

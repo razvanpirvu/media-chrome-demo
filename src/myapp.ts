@@ -6,7 +6,7 @@ import reactTest from "./Test.jsx"
 
 import MediaController  from "media-chrome/dist/media-controller";
 
-// import volumeReact from "./volume";
+import volumeReact from "./volume";
 import playReact from "./PlayPause";
 // function defineCustomElement(name: any, element: any) {
 //   if (!window.customElements.get(name)) {
@@ -41,7 +41,7 @@ function initApp() {
   const azurePlayer: any = new AzureVideoPlayer();
   azurePlayer.addControls();
   reactTest();
-  // volumeReact();
+  volumeReact();
   playReact();
 }
 
