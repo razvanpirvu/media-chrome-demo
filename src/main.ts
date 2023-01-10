@@ -32,27 +32,30 @@ function initApp() {
   if (shaka.Player.isBrowserSupported()) {
     // Everything looks good!
     initPlayer();
+    volumeReact();
+    playReact();
   } else {
     // This browser does not have the minimum set of APIs we need.
     console.error("Browser not supported!");
   }
 
   defineBtn();
-  const azurePlayer: any = new AzureVideoPlayer();
-  azurePlayer.addControls();
-  volumeReact();
-  playReact();
+  // const azurePlayer: any = new AzureVideoPlayer();
+  // azurePlayer.addControls();
+  // volumeReact();
+  // playReact();
 }
 
 function _getVideEl(): HTMLMediaElement {
   return document
-    .querySelector("azure-video-player")
-    ?.shadowRoot?.getElementById("video") as HTMLMediaElement;
+    .querySelector("media-controller")?.querySelector("#video") as HTMLMediaElement;
+    // ?.getElementById("video") as HTMLMediaElement;
 }
 
 async function initPlayer() {
   // Create a Player instance.
   const video = _getVideEl();
+  console.log(video);
 
   player = new shaka.Player(video);
 

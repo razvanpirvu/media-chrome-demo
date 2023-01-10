@@ -15,7 +15,7 @@ const customStyleLoader = {
 
 
 module.exports = {
-  entry: "./src/myapp.ts",
+  entry: "./src/main.ts",
   module: {
     rules: [
       {
@@ -32,10 +32,11 @@ module.exports = {
         }
       },
       {
-        test: /\.css$/i,
+        test: /\.(sa|sc|c)ss$/,
         use: [
-          customStyleLoader,
-          'css-loader'
+          // customStyleLoader,
+          'css-loader',
+          'sass-loader'
         ],
       },
       

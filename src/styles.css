@@ -197,3 +197,17 @@ element {
   .buttonStyle:focus-visible {
     box-shadow: 0 0 2px rgba(0, 0, 0, 0.24), 0 2px 4px rgba(0, 0, 0, 0.28), 0 0 0 2px white !important;
   }
+
+  .tooltip {
+    z-index: 100000;
+  }
+
+  .containerStyle {
+    display: 'flex';
+    background-color: var(--transparent);
+  }
+
+  .buttonIconStyle {
+    width: 20px;
+    height: 20px;
+  }
