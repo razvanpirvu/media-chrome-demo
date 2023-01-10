@@ -3,6 +3,9 @@ import { defineCustomElement } from "media-chrome/dist/utils/defineCustomElement
 
 template.innerHTML = `
 <style>
+
+@import "https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+
 :host {
   display: inline-block;
 }
@@ -137,7 +140,7 @@ class AzureVideoPlayer extends HTMLElement {
         controls.push("<media-mute-button></media-mute-button>");
         break;
       case "volume-range":
-        controls.push("<react-test-volume></react-test-volume>");
+        controls.push("<react-test-volume media-volume></react-test-volume>");
         break;
       case "time-display":
         controls.push(
@@ -151,6 +154,7 @@ class AzureVideoPlayer extends HTMLElement {
         controls.push("<media-fullscreen-button></media-fullscreen-button>");
         break;
       default:
+        controls.push('<button class="btn">test 123</button>')
         break;
     }
   }

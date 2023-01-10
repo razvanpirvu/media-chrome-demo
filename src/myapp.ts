@@ -2,7 +2,7 @@
 const shaka = require("./shaka-player.compiled");
 import defineBtn from "./bitrate-button";
 import AzureVideoPlayer from "./azure-video-player";
-import reactTest from "./Test.jsx"
+import "./styles.css"
 
 import MediaController  from "media-chrome/dist/media-controller";
 
@@ -40,7 +40,6 @@ function initApp() {
   defineBtn();
   const azurePlayer: any = new AzureVideoPlayer();
   azurePlayer.addControls();
-  reactTest();
   volumeReact();
   playReact();
 }

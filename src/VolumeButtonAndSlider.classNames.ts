@@ -106,7 +106,7 @@ export const volumeStyles = makeStyles({
     '@media screen and (-ms-high-contrast: active)': {
       backgroundColor: 'GrayText'
     },
-    backgroundColor: NamedColors.Gray160,
+    backgroundColor: "red",
     ...shorthands.padding('14px', '8px', '14px'),
     ...shorthands.borderRadius('2px'),
     boxShadow: 'none',

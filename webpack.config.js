@@ -1,6 +1,18 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
+const ExtractCssChunks = require('extract-css-chunks-webpack-plugin');
+
+const customStyleLoader = {
+  loader: 'style-loader',
+  options: {
+    insert: function (linkTag) {
+      const parent = document.querySelector('azure-video-player').shadowRoot
+      parent.appendChild(linkTag)
+    },
+  },
+}
+
 
 module.exports = {
   entry: "./src/myapp.ts",
@@ -12,7 +24,7 @@ module.exports = {
         exclude: /node_modules/,
       },
       {
-        test: /\.(js|jsx|tsx)$/,
+        test: /\.(tsx)$/,
         exclude: /node_modules/,
         loader: 'babel-loader',
         options: {
@@ -21,7 +33,10 @@ module.exports = {
       },
       {
         test: /\.css$/i,
-        use: ["style-loader", "css-loader"],
+        use: [
+          customStyleLoader,
+          'css-loader'
+        ],
       },
       
     ],
