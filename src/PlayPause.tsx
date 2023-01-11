@@ -158,7 +158,18 @@ export const PlayPauseToggle: React.FunctionComponent<IPlayPauseToggleProps> = (
         ?.dispatchEvent(
           new Event("mediaplayrequest", { composed: true, bubbles: true })
         );
+
+      const media = document
+        .querySelector("media-controller")
+        ?.shadowRoot?.querySelector(":scope > [slot=media]");
+      console.log("your media: ", media);
     }
+
+    const videoElement: HTMLMediaElement = document
+      .querySelector("media-controller")
+      ?.querySelector("#video") as HTMLMediaElement;
+
+    console.log(videoElement.textTracks);
   };
 
   const observer = new MutationObserver((mutations) => {
