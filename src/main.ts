@@ -8,6 +8,7 @@ import MediaController  from "media-chrome/dist/media-controller";
 
 import volumeReact from "./volume";
 import playReact from "./PlayPause";
+import fullscreenReact from "./FullscreenToggle";
 // function defineCustomElement(name: any, element: any) {
 //   if (!window.customElements.get(name)) {
 //     window.customElements.define(name, element);
@@ -34,6 +35,7 @@ function initApp() {
     initPlayer();
     volumeReact();
     playReact();
+    fullscreenReact();
   } else {
     // This browser does not have the minimum set of APIs we need.
     console.error("Browser not supported!");
