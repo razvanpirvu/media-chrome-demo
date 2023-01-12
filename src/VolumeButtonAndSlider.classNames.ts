@@ -89,6 +89,9 @@ export const CssVarNames = {
 };
 
 export const volumeStyles = makeStyles({
+  container: {
+    backgroundColor: NamedColors.transparent,
+  },
   volumeContainer: {
     position: 'relative'
   },

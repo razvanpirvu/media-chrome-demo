@@ -91,6 +91,14 @@
         background-color: transparent;
         text-shadow: 1px 1px 2px black;
       }
+
+      .spacer {
+        flex-grow: 1;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+      }
     </style>
 
     <nav class="navbar navbar-expand-lg bg-light px-4 mb-4">
@@ -115,7 +123,7 @@
     </div>
     <div class="px-2">
       <div class="row mb-2">
-        <div class="col-8">
+        <div>
           <!-- <azure-video-player
             play-button
             volume-range
@@ -130,11 +138,17 @@
             <video id="video" slot="media" crossorigin autoplay muted>
               <!-- <track label="thumbnails" default kind="metadata" src="https://image.mux.com/DS00Spx1CV902MCtPj5WknGlR102V5HFkDe/storyboard.vtt"> -->
             </video>
-            <media-control-bar>
+
+            <media-control-bar class="first">
+              <react-seek-bar style="width: 100%"></react-seek-bar>
+            </media-control-bar>
+            <!-- You can have more than one element "slotted" to the same slot. -->
+            <media-control-bar class="second">
               <react-play-pause></react-play-pause>
               <react-test-volume></react-test-volume>
               <!-- <media-time-range></media-time-range> -->
-              <react-seek-bar></react-seek-bar>
+              <span class="spacer"></span>
+              <react-playback-experience></react-playback-experience>
               <react-test-fullscreen></react-test-fullscreen>
             </media-control-bar>
           </media-controller>

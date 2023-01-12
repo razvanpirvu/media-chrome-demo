@@ -95,7 +95,9 @@ export const getStyles = makeStyles({
     height: '14px'
   },
   container: {
-    backgroundColor: NamedColors.transparent
+    backgroundColor: NamedColors.transparent,
+    display: 'flex',
+    justifyContent: 'center'
   },
   markersContainer: {
     position: 'relative',

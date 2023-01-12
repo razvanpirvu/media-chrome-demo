@@ -110,9 +110,9 @@ class Player {
   }
 
   get mediaDurationInSeconds() {
-    const duration = +this._mediaController?.getAttribute("media-seekable")!;
+    const duration = +this._mediaController?.getAttribute("media-duration")!;
     // TODO: convert duration to seconds
-    return 653;
+    return Math.round(duration);
   }
 
   get playState() {
@@ -165,6 +165,8 @@ export const SeekBar: React.FunctionComponent<any> = () => {
   // const [customRelativeMousePointerPosition] = React.useState(
   //   props.relativeMousePointerPosition
   // );
+
+  const [sliderWidth, setSliderWidth] = React.useState("200px");
   const styles = getStyles();
 
   const resizeContainer: HTMLDivElement = React.useMemo(() => {
@@ -453,7 +455,14 @@ export const SeekBar: React.FunctionComponent<any> = () => {
       if (sliderRef.current) {
         console.log("slider ref");
         console.log(sliderRef.current.getBoundingClientRect());
+        console.log(
+          "player container, ",
+          document.querySelector("media-controller")?.parentElement?.clientWidth
+        );
         setDimensions(sliderRef.current.getBoundingClientRect());
+        sliderRef.current.style.width = `${
+          document.querySelector("media-controller")?.clientWidth! - 10
+        }px`;
         if (
           sliderRef.current.getBoundingClientRect().width + seekBarPadding <
           timestampWidthBreakpoint
@@ -470,10 +479,31 @@ export const SeekBar: React.FunctionComponent<any> = () => {
     const throttledUpdateSliderRef = throttle(updateSliderRef, 200);
     const sliderResizeObserver = new ResizeObserver(throttledUpdateSliderRef);
     updateSliderRef();
-    sliderResizeObserver.observe(resizeContainer);
+    sliderResizeObserver.observe(
+      document.querySelector("media-controller")?.parentElement!
+    );
 
     // const unsubscribeCurrentTime =
     //   player.currentTimeInSeconds.subscribe(updateSlider);
+
+    const updateTimeObserver = (mutations: MutationRecord[]) => {
+      mutations.forEach((mutation) => {
+        if (
+          mutation.type === "attributes" &&
+          mutation.attributeName === "media-current-time"
+        ) {
+          const el = mutation.target as HTMLElement;
+          const currentTime = +el.getAttribute("media-current-time")!;
+          updateSlider(currentTime);
+        }
+      });
+    };
+    const updateTimeObserverThrottled = throttle(updateTimeObserver, 1000);
+    const timeObserver = new MutationObserver(updateTimeObserverThrottled);
+    const el = document.querySelector("media-controller");
+    timeObserver.observe(el!, {
+      attributeFilter: ["media-current-time"],
+    });
 
     // const unsubscribeBuffer = player.bufferedTimeRanges.subscribe(
 
@@ -539,7 +569,8 @@ export const SeekBar: React.FunctionComponent<any> = () => {
     // );
 
     return () => {
-      //   sliderResizeObserver.disconnect();
+      sliderResizeObserver.disconnect();
+      timeObserver.disconnect();
       //   unsubscribeCurrentTime();
       // unsubscribeBuffer();
       //   unsubscribePlayState();
@@ -685,6 +716,34 @@ export const SeekBar: React.FunctionComponent<any> = () => {
     }
   };
 
+  React.useEffect(() => {
+    if (sliderRef.current && dimension) {
+      sliderRef.current.style.width = `${dimension!.width}`;
+      console.log("Updating slider width...");
+      setSliderWidth(dimension.width.toString());
+
+      setPlayerContainer(
+        document.querySelector("media-controller")?.parentElement
+      );
+      const updateSliderRef = () => {
+        if (sliderRef.current) {
+          console.log("slider ref");
+          console.log(sliderRef.current.getBoundingClientRect());
+          // setDimensions(sliderRef.current.getBoundingClientRect());
+          if (
+            sliderRef.current.getBoundingClientRect().width + seekBarPadding <
+            timestampWidthBreakpoint
+          ) {
+            setIsTimestampShown(true);
+          } else {
+            setIsTimestampShown(false);
+          }
+        }
+      };
+      updateSliderRef();
+    }
+  }, [dimension]);
+
   const onKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
     switch (event.key) {
       case "ArrowLeft":
@@ -732,7 +791,7 @@ export const SeekBar: React.FunctionComponent<any> = () => {
 
   return (
     <FluentProvider theme={webDarkTheme} className={styles.container}>
-      <>
+      <div style={{ display: "flex", justifyContent: "center" }}>
         <Tooltip
           visible={isTooltipVisible}
           positioning={{ positioningRef }}
@@ -762,7 +821,7 @@ export const SeekBar: React.FunctionComponent<any> = () => {
               {
                 ...resolvedCSSVars,
                 "--fui-Slider__thumb--size": "12px",
-                width: "100%",
+                width: sliderWidth,
               } as React.CSSProperties
             }
             rail={{
@@ -799,7 +858,7 @@ export const SeekBar: React.FunctionComponent<any> = () => {
           />
         </Tooltip>
         <div className={tooltipMountNodeStyle} ref={setSliderMountNode} />
-      </>
+      </div>
     </FluentProvider>
   );
 };

@@ -16,6 +16,11 @@ import { FluentProvider, webDarkTheme } from "@fluentui/react-components";
 // import { IExtendedVideoElement } from '../../MtcContextProvider.types';
 // import { altKeyName } from '@msstream/shared-ui';
 import { OverflowableButton } from "./OverflowableButton";
+import {
+  CssVarNames,
+  NamedColors,
+  volumeStyles,
+} from "./VolumeButtonAndSlider.classNames";
 // import { useObservable } from '@msstream/utilities-hooks';
 
 export interface IFullscreenToggleProps {
@@ -67,7 +72,7 @@ export const FullscreenToggle: React.FunctionComponent<IFullscreenToggleProps> =
     }, [playerContainer, loadingState]);
 
     const isFullscreenVoiceAccessFixEnabled = false; //useBooleanSetting('isFullscreenVoiceAccessFixEnabled');
-
+    const styles = volumeStyles();
     let handleFullscreenChange: () => void;
 
     handleFullscreenChange = () => {
@@ -138,7 +143,7 @@ export const FullscreenToggle: React.FunctionComponent<IFullscreenToggleProps> =
     }, [isFullscreen]);
 
     return (
-      <FluentProvider theme={webDarkTheme}>
+      <FluentProvider theme={webDarkTheme} className={styles.container}>
         <OverflowableButton
           ariaRole="menuitemcheckbox"
           tooltipMountNode={props.tooltipMountNode}

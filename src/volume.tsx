@@ -359,7 +359,7 @@ export const VolumeButtonAndSlider: React.FunctionComponent<any> = (
   };
 
   return (
-    <FluentProvider theme={webDarkTheme}>
+    <FluentProvider theme={webDarkTheme} className={styles.container}>
       <div
         className={styles.volumeContainer}
         // tslint:disable-next-line: jsx-ban-props

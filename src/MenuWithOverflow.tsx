@@ -56,8 +56,7 @@ export const MenuWithOverflow: React.FunctionComponent<
   IMenuWithOverflowProps
 > = (props: IMenuWithOverflowProps) => {
   const menuStyles = menuWithOverflowStyles();
-  const { loc, overflowButtons, useBooleanSetting } =
-    usePlaybackExperienceContext();
+  const { overflowButtons } = usePlaybackExperienceContext();
   const attrs = useArrowNavigationGroup({
     axis: "horizontal",
     memorizeCurrent: true,
@@ -155,9 +154,7 @@ export const MenuWithOverflow: React.FunctionComponent<
     overflowButtons.value = newOverflowItemList;
   }, [containerWidth, props.childWidth, visibleChildren]);
 
-  const isFluentMtcOverflowTooltipFixEnabled = useBooleanSetting(
-    "isFluentMtcOverflowTooltipFixEnabled"
-  );
+  const isFluentMtcOverflowTooltipFixEnabled = false;
 
   return (
     <div
@@ -175,8 +172,8 @@ export const MenuWithOverflow: React.FunctionComponent<
               : undefined
           }
           buttonContents={<MoreHorizontal20Regular />}
-          tooltipText={loc.getString("PlaybackExperienceOverflowButtonTooltip")}
-          ariaLabel={loc.getString("PlaybackExperienceOverflowButtonAriaLabel")}
+          tooltipText={"PlaybackExperienceOverflowButtonTooltip"}
+          ariaLabel={"PlaybackExperienceOverflowButtonAriaLabel"}
           initalSubmenu="overflowMenu"
           openUserActionName="OpenOverflowMenu"
           closeUserActionName="CloseOverflowMenu"

@@ -193,7 +193,7 @@ export const PlayPauseToggle: React.FunctionComponent<IPlayPauseToggleProps> = (
   }, []);
 
   return (
-    <FluentProvider theme={webDarkTheme}>
+    <FluentProvider theme={webDarkTheme} className={styles.container}>
       <Tooltip
         content={{
           className: sharedStyles.tooltip,

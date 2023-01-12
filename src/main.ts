@@ -10,6 +10,7 @@ import volumeReact from "./volume";
 import playReact from "./PlayPause";
 import fullscreenReact from "./FullscreenToggle";
 import seekBarReact from "./SeekBar/SeekBar"
+import reactPlaybackExperience from "./PlaybackExperience";
 // function defineCustomElement(name: any, element: any) {
 //   if (!window.customElements.get(name)) {
 //     window.customElements.define(name, element);
@@ -38,6 +39,7 @@ function initApp() {
     playReact();
     fullscreenReact();
     seekBarReact();
+    reactPlaybackExperience();
   } else {
     // This browser does not have the minimum set of APIs we need.
     console.error("Browser not supported!");
