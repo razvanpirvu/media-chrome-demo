@@ -41,9 +41,9 @@ export const PlaybackSpeedSubmenu: React.FunctionComponent<ISubmenuProps> = (
   const sharedStyles = submenuStyles();
   const { settings, updateSettings, logChangeSettingsAction } =
     useMenuSettings();
-  const { loc, rtl, player, playerContainer, useBooleanSetting } =
-    usePlaybackExperienceContext();
-  const [playbackRate] = React.useState(player.playbackRate);
+  //   const { loc, rtl, player, playerContainer, useBooleanSetting } =
+  //     usePlaybackExperienceContext();
+  const [playbackRate] = React.useState(1);
   const [checkedValues, setCheckedValues] = React.useState<
     Record<string, string[]>
   >(() => {
@@ -54,21 +54,13 @@ export const PlaybackSpeedSubmenu: React.FunctionComponent<ISubmenuProps> = (
     }
 
     return {
-      playbackspeed: [player.playbackRate.value.toString()],
+      playbackspeed: ["1"], //[player.playbackRate.value.toString()],
     };
   });
-  const isFluentMenuItemRadioFixEnabled = useBooleanSetting(
-    "isFluentMenuItemRadioFixEnabled"
-  );
-  const isHighContrastChangesEnabled = useBooleanSetting(
-    "isHighContrastChangesEnabled"
-  );
-  const isAutoFocusOnMenuOpenFixEnabled = useBooleanSetting(
-    "isAutoFocusOnMenuOpenFixEnabled"
-  );
-  const isFocusSubmenuButtonFixEnabled = useBooleanSetting(
-    "isFocusSubmenuButtonFixEnabled"
-  );
+  const isFluentMenuItemRadioFixEnabled = false;
+  const isHighContrastChangesEnabled = false;
+  const isAutoFocusOnMenuOpenFixEnabled = false;
+  const isFocusSubmenuButtonFixEnabled = false;
 
   const menuItemStyle = isHighContrastChangesEnabled
     ? mergeClasses(
@@ -89,12 +81,13 @@ export const PlaybackSpeedSubmenu: React.FunctionComponent<ISubmenuProps> = (
         `${newCheckedItem}x`
       );
       updateSettings({ ...settings, playbackSpeed: newCheckedItem });
-      player.playbackRate.value = Number.parseFloat(newCheckedItem);
-      const screenReaderString = formatString(
-        loc.getString("FluentPlaybackSpeedChangedStatusMessage"),
-        newCheckedItem
-      );
-      createScreenReaderAlert(screenReaderString, true);
+
+      //   player.playbackRate.value = Number.parseFloat(newCheckedItem);
+      //   const screenReaderString = formatString(
+      //     loc.getString("FluentPlaybackSpeedChangedStatusMessage"),
+      //     newCheckedItem
+      //   );
+      //   createScreenReaderAlert(screenReaderString, true);
     }
 
     // close submenu on change
@@ -111,9 +104,9 @@ export const PlaybackSpeedSubmenu: React.FunctionComponent<ISubmenuProps> = (
     setCheckedValues(() => ({ playbackspeed: [playbackRate.toString()] }));
   }, [playbackRate]);
 
-  resolvedCSSVars[`${CssVarNames.playerContainerHeight}`] = `${
-    playerContainer.clientHeight - mtcHeightWithPadding
-  }px`;
+  //   resolvedCSSVars[`${CssVarNames.playerContainerHeight}`] = `${
+  //     playerContainer.clientHeight - mtcHeightWithPadding
+  //   }px`;
 
   let menuRef = React.useRef<null | HTMLDivElement>(null);
   if (!isAutoFocusOnMenuOpenFixEnabled) {
@@ -147,7 +140,7 @@ export const PlaybackSpeedSubmenu: React.FunctionComponent<ISubmenuProps> = (
     <MenuList
       ref={menuRef}
       checkedValues={checkedValues}
-      dir={rtl ? "rtl" : "ltr"}
+      //   dir={rtl ? "rtl" : "ltr"}
       onCheckedValueChange={onChange}
       className={sharedStyles.container}
       // tslint:disable-next-line: jsx-ban-props

@@ -156,16 +156,13 @@ const PlaybackExperience: React.FunctionComponent<IPlaybackExperienceProps> = (
               {playerPlaybackRate.toString()}x
             </React.Fragment>
           }
-          tooltipText={formatString(
-            loc.getString("PlaybackSpeedTooltip"),
-            altKeyName
-          )}
+          tooltipText={formatString("PlaybackSpeedTooltip", altKeyName)}
           ariaLabel={formatString(
-            loc.getString("PlaybackSpeedButtonWithCurrentSpeedAriaLabel"),
+            "PlaybackSpeedButtonWithCurrentSpeedAriaLabel",
             playerPlaybackRate.toString()
           )}
           ariaDescription={formatString(
-            loc.getString("PlaybackSpeedButtonAriaDescription"),
+            "PlaybackSpeedButtonAriaDescription",
             altKeyName
           )}
           initalSubmenu="playbackSpeed"
@@ -177,7 +174,7 @@ const PlaybackExperience: React.FunctionComponent<IPlaybackExperienceProps> = (
       subMenu: {
         buttonContents: <PlaybackSpeedIcon includeTitle />,
         buttonAriaLabel: formatString(
-          loc.getString("PlaybackSpeedButtonWithCurrentSpeedAriaLabel"),
+          "PlaybackSpeedButtonWithCurrentSpeedAriaLabel",
           playerPlaybackRate.toString()
         ),
         submenuToOpen: "playbackSpeed",

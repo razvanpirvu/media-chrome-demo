@@ -151,7 +151,7 @@ export const MenuWithOverflow: React.FunctionComponent<
     }
 
     setRegularItems(newRegularItemList);
-    overflowButtons.value = newOverflowItemList;
+    // overflowButtons.value = newOverflowItemList;
   }, [containerWidth, props.childWidth, visibleChildren]);
 
   const isFluentMtcOverflowTooltipFixEnabled = false;
@@ -163,7 +163,7 @@ export const MenuWithOverflow: React.FunctionComponent<
       aria-label={props.menuAriaLabel}
       {...attrs}
     >
-      {overflowButtons.value.length > 0 && (
+      {/* {overflowButtons.value.length > 0 && (
         <SubmenuButton
           mtcMenuOpen={props.mtcMenuOpen}
           tooltipMountNode={
@@ -179,7 +179,7 @@ export const MenuWithOverflow: React.FunctionComponent<
           closeUserActionName="CloseOverflowMenu"
           popoverClassName={menuStyles.overflowPopover}
         />
-      )}
+      )} */}
       {regularItems.map((button: IOverflowableButton) => (
         // tslint:disable-next-line: jsx-ban-props
         <div style={{ width: props.childWidth }} key={button.key}>

@@ -76,11 +76,13 @@ const SubmenuButtonComponent: React.FunctionComponent<ISubmenuButtonProps> = (
   const currentSubmenu = submenuStack[submenuStack.length - 1];
   const buttonRef = React.useRef<HTMLButtonElement>(null);
 
-  const { loc, log, rtl, player, playerContainer, useBooleanSetting } =
-    usePlaybackExperienceContext();
-  resolvedCSSVars[`${CssVarNames.playerContainerHeight}`] = `${
-    playerContainer.clientHeight - mtcHeightWithPadding
-  }px`;
+  //   const { loc, log, rtl, player, playerContainer, useBooleanSetting } =
+  //     usePlaybackExperienceContext();
+
+  // resolvedCSSVars[`${CssVarNames.playerContainerHeight}`] = `${
+  //     playerContainer.clientHeight - mtcHeightWithPadding
+  //   }px`;
+
   const [open, setOpen] = React.useState(false);
   const [showTooltip, setShowTooltip] = React.useState(false);
 
@@ -89,12 +91,8 @@ const SubmenuButtonComponent: React.FunctionComponent<ISubmenuButtonProps> = (
   const mtcStyles = mtcComponentsStyles();
   const inOverflowMenu = props.initalSubmenu === "overflowMenu";
 
-  const isHighContrastChangesEnabled = useBooleanSetting(
-    "isHighContrastChangesEnabled"
-  );
-  const isFocusSubmenuButtonFixEnabled = useBooleanSetting(
-    "isFocusSubmenuButtonFixEnabled"
-  );
+  const isHighContrastChangesEnabled = false;
+  const isFocusSubmenuButtonFixEnabled = false;
 
   let menuTriggerRef = props.buttonRef;
   if (isFocusSubmenuButtonFixEnabled) {
@@ -142,33 +140,13 @@ const SubmenuButtonComponent: React.FunctionComponent<ISubmenuButtonProps> = (
     menuTriggerRef?.current?.focus();
   }, [buttonRef, props.buttonRef]);
 
-  function logOpen(submenuName: SubmenuName, actionType: ActionType): void {
-    log.userAction("PlayerButtonAction", {
-      name: getSubmenuOpenUserActionName(submenuName),
-      playbackTimeSec: player.currentTimeInSeconds.value || -1,
-      actionType,
-      inOverflowMenu: submenuName !== "overflowMenu" ? inOverflowMenu : false,
-    });
-  }
-
-  function logClose(submenuName: SubmenuName, actionType: ActionType): void {
-    log.userAction("PlayerButtonAction", {
-      name: getSubmenuCloseUserActionName(submenuName),
-      playbackTimeSec: player.currentTimeInSeconds.value || -1,
-      actionType,
-      inOverflowMenu: submenuName !== "overflowMenu" ? inOverflowMenu : false,
-    });
-  }
-
   function navigateBack(actionType: ActionType): void {
-    logClose(currentSubmenu, actionType);
     const newStack = submenuStack.slice(0, -1);
     setSubmenuStack(newStack);
   }
 
   function navigateTo(newSubmenu: SubmenuName, actionType: ActionType): void {
     const newStack = submenuStack.slice();
-    logOpen(newSubmenu, actionType);
     newStack.push(newSubmenu);
     setSubmenuStack(newStack);
   }
@@ -203,15 +181,11 @@ const SubmenuButtonComponent: React.FunctionComponent<ISubmenuButtonProps> = (
 
   const updateMenuOpenState = (openMenu: boolean, actionType: ActionType) => {
     setOpen(openMenu);
-    props.mtcMenuOpen.value = openMenu;
+    // props.mtcMenuOpen.value = openMenu;
     if (openMenu) {
-      logOpen(props.initalSubmenu, actionType);
     } else {
       // The user might be closing the popover by clicking outside, so we need to reset the navigation stack here
       // Log close for all submenu in the stack
-      for (let index = submenuStack.length - 1; index >= 0; index--) {
-        logClose(submenuStack[index], actionType);
-      }
 
       setSubmenuStack([props.initalSubmenu]);
       setShowTooltip(false);
@@ -229,17 +203,15 @@ const SubmenuButtonComponent: React.FunctionComponent<ISubmenuButtonProps> = (
       menuItemsToAddToTopOfSubmenu = [
         <MenuGroup key="submenu title group">
           <Button
-            aria-label={`${loc.getString(
-              getSubMenuTitleStringName(currentSubmenu)
-            )}, ${loc.getString(
-              getBackButtonAriaDescriptionStringName(currentSubmenu)
-            )}`}
+            aria-label={`${getSubMenuTitleStringName(
+              currentSubmenu
+            )}, ${getBackButtonAriaDescriptionStringName(currentSubmenu)}`}
             className={backButtonStyle}
             key="Back Button"
             onClick={onBackButtonClick}
-            icon={rtl ? <ChevronRight20Regular /> : <ChevronLeft20Regular />}
+            icon={<ChevronRight20Regular />}
           >
-            {loc.getString(getSubMenuTitleStringName(currentSubmenu))}
+            {getSubMenuTitleStringName(currentSubmenu)}
           </Button>
         </MenuGroup>,
         <MenuDivider key="Divider" className={subStyles.dividerStyle} />,
@@ -269,9 +241,10 @@ const SubmenuButtonComponent: React.FunctionComponent<ISubmenuButtonProps> = (
       onOpenChange={onOpenChange}
       openOnHover={false}
       positioning={
-        inOverflowMenu && currentSubmenu === "captionSettings"
-          ? { flipBoundary: playerContainer, position: "above" }
-          : "above"
+        "above"
+        // inOverflowMenu && currentSubmenu === "captionSettings"
+        //   ? { flipBoundary: playerContainer, position: "above" }
+        //   : "above"
       }
     >
       <Tooltip
@@ -311,10 +284,7 @@ const SubmenuButtonComponent: React.FunctionComponent<ISubmenuButtonProps> = (
           inOverflowMenu
             ? ({
                 ...resolvedCSSVars,
-                maxWidth:
-                  currentSubmenu === "captionSettings"
-                    ? playerContainer.offsetWidth * 0.85
-                    : "max-content",
+                maxWidth: "max-content",
                 overflow: "hidden",
               } as React.CSSProperties)
             : ({ ...resolvedCSSVars } as React.CSSProperties)

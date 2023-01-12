@@ -56,7 +56,6 @@ export const MenuProvider: React.FC<IMenuProviderProps> = ({
     settingsStore,
     isNextGenEngineEnabled,
     showPlaybackSpeed,
-    useBooleanSetting,
   } = usePlaybackExperienceContext();
 
   const loadMenuSettings = () => {
@@ -106,12 +105,6 @@ export const MenuProvider: React.FC<IMenuProviderProps> = ({
     const settingsToPersist: Partial<MenuSettings> = { ...settings };
     if (settingsToPersist.playbackSpeed) {
       delete settingsToPersist.playbackSpeed;
-    }
-
-    if (useBooleanSetting("isRemoveQualitySettingFromLocalStorageEnabled")) {
-      if (settingsToPersist.quality) {
-        settingsToPersist.quality = "-1";
-      }
     }
 
     persistMenuSettings(JSON.stringify(settingsToPersist));
